@@ -1,4 +1,4 @@
-package tw.lab.turtor;
+package tw.lab.tutor;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

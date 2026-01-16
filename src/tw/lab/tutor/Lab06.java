@@ -1,4 +1,4 @@
-package tw.lab.turtor;
+package tw.lab.tutor;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
 import java.net.URL;
 
 import org.json.JSONArray;
@@ -35,6 +36,10 @@ public class Lab06 {
 
 	public static void main(String[] args) {
 			String json;
+			
+			
+//			ExecutorService 現代最常使用執行序語法
+			
 			try {			
 				json = fetchFromURL(URL_OPENDATA);
 				parseJSON(json);
