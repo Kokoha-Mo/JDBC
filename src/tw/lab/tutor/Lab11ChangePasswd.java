@@ -85,22 +85,23 @@ public class Lab11ChangePasswd {
 		}
 		
 		static boolean chPasswd(Member member) {
-			 try(Connection conn = DriverManager.getConnection(URL,prop);
+			System.out.println("Change Password,Please Enter New Password:");
+			Scanner scanner = new Scanner(System.in);
+			String newPasswd = scanner.nextLine(); 
+			String passwdRegex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$";
+			if (newPasswd == passwdRegex) {					 
+				try(Connection conn = DriverManager.getConnection(URL,prop);
 					 PreparedStatement pstmt = conn.prepareStatement(SQL_CHPASSWD)){
-				 System.out.println("Change Password,Please Enter New Password:");
-				 Scanner scanner = new Scanner(System.in);
-				 String newPasswd = scanner.nextLine(); 
-				 if (newPasswd != "") {					 
 					 pstmt.setString(1, BCrypt.hashpw(newPasswd, BCrypt.gensalt()));
 					 pstmt.setLong(2, member.getId());
 					 pstmt.executeUpdate();
 					 return true;
-				 } else {
-//					 System.out.println("Cancel Change Password");
-					 return false;
-				 }
-			 } catch (SQLException e) {
-				System.out.println(e);
+				} catch (SQLException e) {
+				 System.out.println(e);
+				 return false;
+				}				 
+			} else {
+//				System.out.println("Cancel Change Password");
 				return false;
 			}
 		}

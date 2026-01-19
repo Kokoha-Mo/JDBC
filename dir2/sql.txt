@@ -1,0 +1,68 @@
+SELECT `Title`,`FirstName`,`LastName` 
+FROM `employees` 
+ORDER BY Title ASC,FirstName DESC
+
+SELECT `Title`,`FirstName`,`LastName` 
+FROM `employees` 
+WHERE Title <> 'Sales Representative'
+ORDER BY Title ASC, FirstName DESC
+
+SELECT `FirstName`,`LastName` 
+FROM `employees` 
+WHERE `Region` is NULL
+
+SELECT `ProductID`,`ProductName`,`UnitsInStock`,`UnitsOnOrder`,`ReorderLevel` 
+FROM `products` 
+WHERE `UnitsInStock`-`UnitsOnOrder` <= `ReorderLevel`;
+
+SELECT `OrderID`,`CustomerID`,`EmployeeID`,`RequiredDate`,`ShippedDate`
+FROM `orders` 
+WHERE `ShippedDate` > `RequiredDate`
+ORDER BY `CustomerID`
+
+SELECT `City`,COUNT(`EmployeeID`) count 
+FROM `employees` 
+GROUP BY `City`
+HAVING count >= 2;
+
+SELECT `ProductID`,SUM(`Quantity`) sum
+FROM `orderdetails` 
+GROUP BY `ProductID`
+HAVING sum < 200;
+
+SELECT `CompanyName`,`ContactName`,`Phone` 
+FROM `customers` 
+WHERE `CustomerID` = ( 
+	SELECT `CustomerID` 
+	FROM orders 
+	WHERE orderID = 10254);
+	
+SELECT `CustomerID`,`CompanyName` 
+FROM `customers` 
+WHERE `CustomerID` IN (
+    SELECT `CustomerID`
+    FROM orders
+    WHERE `OrderDate` BETWEEN '1997-01-01' AND '1997-12-31'
+    );
+    
+SELECT `ProductID`,`ProductName`,`CategoryID` 
+FROM `products` 
+WHERE CategoryID IN (
+    SELECT CategoryID
+    FROM categories
+    WHERE `CategoryName` = 'Seafood'
+    )
+    
+SELECT o.EmployeeID,e.LastName,SUM(od.UnitPrice*od.Quantity) sum
+FROM `orders` o
+	JOIN employees e ON o.EmployeeID = e.EmployeeID
+    JOIN orderdetails od ON o.OrderID = od.OrderID
+GROUP BY o.EmployeeID
+ORDER BY sum DESC
+
+SELECT SUM(`UnitPrice`*`Quantity`) 
+FROM `orderdetails` 
+WHERE `OrderID` IN ( 
+	SELECT OrderID 
+	FROM orders 
+	WHERE EmployeeID = 5 );
